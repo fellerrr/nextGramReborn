@@ -11,10 +11,10 @@ export default function Photo({ photo }) {
         className="w-full object-cover aspect-square col-span-2"
       />
 
-      <div className="bg-white p-4 px-6">
-        <h3>{photo.caption}</h3>
-        {/*<p>Taken by {photo.username}</p>*/}
-      </div>
+      {/*<div className="bg-white p-4 px-6">*/}
+      {/*  <h3>{photo.caption}</h3>*/}
+      {/*  /!*<p>Taken by {photo.username}</p>*!/*/}
+      {/*</div>*/}
     </>
   );
 }

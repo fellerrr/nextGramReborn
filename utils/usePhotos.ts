@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {supabase} from "@/lib/supabaseClient";
 
-const usePhotos =()=>{
+const usePhotos =(ifNewPhoto)=>{
   const [photos, setPhotos] = useState<any>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
@@ -12,7 +12,7 @@ const usePhotos =()=>{
       setPhotos(response.data)
       setIsLoading(false)
     })()
-  },[])
+  },[ifNewPhoto])
   return [photos, isLoading]
 }
 
