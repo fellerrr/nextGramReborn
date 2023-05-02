@@ -1,6 +1,11 @@
 import Image from "next/image";
+import { PhotoI } from  '@/types'
 
-export default function Photo({ photo }) {
+type Props = {
+  photo:PhotoI
+}
+const Photo = ({photo}:Props) => {
+  console.log(photo)
   return (
     <>
       <Image
@@ -10,11 +15,8 @@ export default function Photo({ photo }) {
         width={600}
         className="w-full object-cover aspect-square col-span-2"
       />
-
-      {/*<div className="bg-white p-4 px-6">*/}
-      {/*  <h3>{photo.caption}</h3>*/}
-      {/*  /!*<p>Taken by {photo.username}</p>*!/*/}
-      {/*</div>*/}
     </>
   );
 }
+
+export default Photo;

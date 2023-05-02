@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import {FC} from 'react';
 import {supabase} from "@/lib/supabaseClient";
 import {useRouter} from "next/router";
 import Upload from "@/components/Upload";
+import {HeaderProps} from "@/types";
 
 
-const Header = ({user, ifNewPhoto, setIfNewPhoto}) => {
+
+const Header: FC<HeaderProps> = ({user, ifNewPhoto, setIfNewPhoto}) => {
   const router = useRouter()
 
 

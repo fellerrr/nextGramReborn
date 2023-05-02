@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import {supabase} from "@/lib/supabaseClient";
-import {useForm} from "react-hook-form";
+import {useForm, UseFormRegister} from "react-hook-form";
 import {Simulate} from "react-dom/test-utils";
 import error = Simulate.error;
 import {useRouter} from "next/router";
+import {FormDataI} from "@/types";
 
 
 
@@ -15,7 +16,7 @@ const Auth = () => {
   const [isRegister,setIsRegister]=useState(true)
 
 
-  const { register, handleSubmit, formState: { errors }} = useForm();
+  const { register, handleSubmit, formState: { errors }} = useForm<FormDataI>();
     const handleRegister = async (formData)=>{
     const email = formData.email
     const password = formData.password
@@ -30,23 +31,23 @@ const Auth = () => {
         name_last:formData.lastname
       })
       setIsRegister(true)
-      router.push('/')
+      await router.push('/')
     } catch (error) {
-      alert(error.message)
+      alert((error as Error).message)
     } finally {
       setLoading(false)
     }
   }
-  const handleLogin = async (formData)=>{
+  const handleLogin = async (formData:FormDataI)=>{
     const email = formData.email
     const password = formData.password
     try {
       setLoading(true)
-      const { user, error } = await supabase.auth.signInWithPassword({ email, password })
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) throw error
-      router.push('/')
+      await router.push('/')
     } catch (error) {
-      alert(error.message)
+      alert((error as Error).message)
     } finally {
       setLoading(false)
     }

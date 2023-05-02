@@ -42,16 +42,16 @@ export default function Home() {
       </Head>
       <Header user={user} ifNewPhoto={ifNewPhoto} setIfNewPhoto={setIfNewPhoto} />
       <main className="">
-        {photo && <Modal user={user} photo={photo} ifNewPhoto={ifNewPhoto} setIfNewPhoto={setIfNewPhoto}/>}
+        {photo && photo !== true && <Modal user={user} photo={photo} ifNewPhoto={ifNewPhoto} setIfNewPhoto={setIfNewPhoto}/>}
         {isLoading
           ? <p>Loading...</p>
           : <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 auto-rows-max	 gap-6 m-10">
-            {photos.map(({ id, url }) => (
+            {photos && photos !== true && photos.map(({ id, url }) => (
               <Link
                 key={id}
                 // href={`/photos/${id}`}
                 href={{pathname: '/', query:{photoId:id}}}
-                as={`/photos/${encodeURI(id)}`}
+                as={`/photos/${encodeURI(String(id))}`}
                 shallow
               >
                 <img

@@ -1,49 +1,52 @@
-import { useState, useEffect} from "react";
+import  {useState, useEffect, FC, ChangeEvent} from "react";
 import { supabase } from "@/lib/supabaseClient";
 import {useRouter} from "next/router";
+import {Upload} from "@/types";
 
 
-export default function Upload ({ifNewPhoto, setIfNewPhoto}) {
+const Upload:FC<Upload> = ({ifNewPhoto, setIfNewPhoto}) => {
   const [uploading, setUploading] = useState(false)
   const router = useRouter()
-  async function upload(event) {
+  async function upload(event: ChangeEvent<HTMLInputElement>) {
     try{
       setUploading(true)
+
+      if (event.target.files && event.target.files.length > 0) {
+        const file = event.target.files[0]
+        const fileExt = file.name.split('.').pop()
+        const fileName = `${Math.random()}.${fileExt}`
+        const filePath = `${fileName}`
+
+        let {error: uploadError} = await supabase.storage
+          .from('photos')
+          .upload(filePath, file)
+
+        if (uploadError) {
+          throw uploadError
+        }
+
+        const {
+          data: {publicUrl}
+        }
+          = supabase.storage.from('photos').getPublicUrl(filePath)
+
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
+
+        await supabase.from('photos').insert({
+          user_id: user?.id,
+          url: publicUrl
+        })
+      }
 
       if (!event.target.files || event.target.files.length === 0){
         throw new Error('Выберите фото для загрузки')
       }
 
-      const file = event.target.files[0]
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random()}.${fileExt}`
-      const filePath = `${fileName}`
-
-      let {error: uploadError} = await supabase.storage
-        .from('photos')
-        .upload(filePath, file)
-
-      if (uploadError) {
-        throw uploadError
-      }
-
-      const {
-        data: {publicUrl}
-      }
-      = supabase.storage.from('photos').getPublicUrl(filePath)
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-
-      await supabase.from('photos').insert({
-        user_id: user?.id,
-        url: publicUrl
-      })
-
     }
     catch (error){
-      alert(error.message)
+      alert((error as Error).message)
     }
     finally {
       setUploading(false)
@@ -73,3 +76,5 @@ export default function Upload ({ifNewPhoto, setIfNewPhoto}) {
     </div>
   )
 }
+
+export default  Upload

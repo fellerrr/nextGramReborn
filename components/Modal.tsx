@@ -1,8 +1,9 @@
-import { useCallback, useRef, useEffect } from "react";
+import React, {useCallback, useRef, useEffect, FC} from "react";
 import { useRouter } from "next/navigation";
 import {supabase} from "@/lib/supabaseClient";
+import {ModalProps} from "@/types";
 
-export default function Modal({ user, photo, ifNewPhoto, setIfNewPhoto }) {
+const Modal:FC<ModalProps> = ({ user, photo, ifNewPhoto, setIfNewPhoto }) => {
   const overlay = useRef<HTMLDivElement>(null!)
   const wrapper = useRef<HTMLDivElement>(null!)
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function Modal({ user, photo, ifNewPhoto, setIfNewPhoto }) {
   }, [router]);
 
   const onClick = useCallback(
-    (e) => {
+    (e: React.MouseEvent) => {
       if (e.target === overlay.current || e.target === wrapper.current) {
         if (onDismiss) onDismiss();
       }
@@ -21,7 +22,7 @@ export default function Modal({ user, photo, ifNewPhoto, setIfNewPhoto }) {
   );
 
   const onKeyDown = useCallback(
-    (e) => {
+    (e: KeyboardEvent) => {
       if (e.key === "Escape") onDismiss();
     },
     [onDismiss]
@@ -69,13 +70,10 @@ export default function Modal({ user, photo, ifNewPhoto, setIfNewPhoto }) {
             width={600}
             className="w-full object-cover aspect-square col-span-2"
           />
-
-          {/*<div className="bg-white p-4 px-6">*/}
-          {/*  <h3>{photo.caption}</h3>*/}
-          {/*  /!*<p>Taken by {photo.username}</p>*!/*/}
-          {/*</div>*/}
         </>
       </div>
     </div>
   );
 }
+
+export default Modal

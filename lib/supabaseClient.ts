@@ -3,4 +3,13 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+
+// if (supabaseKey ) {
+//   // supabaseKey не undefined
+//   export const supabase = createClient(supabaseUrl, supabaseKey)
+// } else {
+//   // supabaseKey undefined
+//   // обработать ошибку или выбросить исключение
+// }
+
+export const supabase = createClient(supabaseUrl!, supabaseKey!)

@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
 import {supabase} from "@/lib/supabaseClient";
+import { PhotoI } from  '@/types'
 
 const usePhoto = (id: string | string[] | undefined) =>{
-  const [photo, setPhoto] = useState<any>(null)
+  const [photo, setPhoto] = useState<PhotoI | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useEffect(()=>{
@@ -18,7 +19,7 @@ const usePhoto = (id: string | string[] | undefined) =>{
         .select()
         .eq('id', id)
         .single()
-      setPhoto(response.data)
+      setPhoto(response.data as PhotoI | null)
       setIsLoading(false)
     })()
   },[id])
