@@ -17,7 +17,7 @@ const Auth = () => {
 
 
   const { register, handleSubmit, formState: { errors }} = useForm<FormDataI>();
-    const handleRegister = async (formData)=>{
+    const handleRegister = async (formData:FormDataI)=>{
     const email = formData.email
     const password = formData.password
     try {
